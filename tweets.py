@@ -7,10 +7,10 @@ from abc import ABCMeta,abstractmethod
 
 class TwitterConfig:
 
-    __CONSUMER_KEY = "22XFA1jHP4VTUEmEyhiGUtD80"
-    __CONSUMER_SECRET = "UmYCo8IZ12NJ84iu4dH6wEAGXbNzEvUf9HV4PzG5aTxhTh3CIp"
-    __OAUTH_TOKEN = "981633761786974208-g628s2L3TmBe7UD4jHBs8VoiIDISfun"
-    __OAUTH_TOKEN_SECRET = "X1mxrhXbecXnhYfrCw9UU1kLGdDT0SY3XKRYUkvknUrlI"
+    __CONSUMER_KEY = "add your key"
+    __CONSUMER_SECRET = "add your key"
+    __OAUTH_TOKEN = "add your key"
+    __OAUTH_TOKEN_SECRET = "add your key"
 
 class twitterBase(metaclass=ABCMeta):
 
