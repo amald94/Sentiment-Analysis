@@ -39,19 +39,23 @@ class MongoInitilize(twitterBase,TwitterConfig):
         if 'tweets_db' in self.dbNames:
             pass
         else:
+            ## create our database
             self.db = self.client.tweets_db
             self.tweet_collection = self.db.tweet_collection
             self.tweet_collection.create_index([("id",pymongo.ASCENDING)],unique=True)
             print("Database Created")
+        ## method call to perform the action
         self.searchTweets()
 
     def searchTweets(self):
         print("Searching tweets")
         self.count = 50
         self.query = "Trump"
+        ## twitter api call
         self.tweetz = self.callApi()
         self.searchResult = self.tweetz.search.tweets(count=self.count,q=self.query)
         pprint(self.searchResult['search_metadata'])
+        ## method call save the result into mongoDB
         self.saveTweets()
 
     def saveTweets(self):
