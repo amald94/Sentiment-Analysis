@@ -4,13 +4,8 @@ import json
 import twitter
 from pprint import pprint
 from abc import ABCMeta,abstractmethod
+from twiterKeys import TwitterConfig
 
-class TwitterConfig:
-
-    __CONSUMER_KEY = "add your key"
-    __CONSUMER_SECRET = "add your key"
-    __OAUTH_TOKEN = "add your key"
-    __OAUTH_TOKEN_SECRET = "add your key"
 
 class twitterBase(metaclass=ABCMeta):
 
@@ -29,18 +24,25 @@ class twitterBase(metaclass=ABCMeta):
 
 class MongoInitilize(twitterBase,TwitterConfig):
 
-
+    ## api call to fetch tweets from twitter
     def callApi(self):
         self.auth = twitter.oauth.OAuth(self._TwitterConfig__OAUTH_TOKEN, self._TwitterConfig__OAUTH_TOKEN_SECRET, self._TwitterConfig__CONSUMER_KEY, self._TwitterConfig__CONSUMER_SECRET)
         self.twitter_api = twitter.Twitter(auth=self.auth)
         return self.twitter_api
 
+    ## create data base using pymongo
     def startProcess(self):
         self.client = MongoClient()
-        self.db = self.client.tweets_db
-        self.tweet_collection = self.db.tweet_collection
-        self.tweet_collection.create_index([("id",pymongo.ASCENDING)],unique=True)
-        print("Database Created")
+        #print(self.client.list_database_names())
+        ## check if data base already exists or not
+        self.dbNames = self.client.list_database_names()
+        if 'tweets_db' in self.dbNames:
+            pass
+        else:
+            self.db = self.client.tweets_db
+            self.tweet_collection = self.db.tweet_collection
+            self.tweet_collection.create_index([("id",pymongo.ASCENDING)],unique=True)
+            print("Database Created")
         self.searchTweets()
 
     def searchTweets(self):
@@ -58,6 +60,7 @@ class MongoInitilize(twitterBase,TwitterConfig):
         for status in self.statuses:
             try:
                 self.tweet_collection.insert(status)
+                ##pprint(status)
             except:
                 pass
 
