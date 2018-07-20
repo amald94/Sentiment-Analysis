@@ -7,7 +7,7 @@ from abc import ABCMeta,abstractmethod
 from twiterKeys import TwitterConfig
 
 
-class twitterBase(metaclass=ABCMeta):
+class TwitterBase(metaclass=ABCMeta):
 
     @abstractmethod
     def callApi(self):
@@ -22,7 +22,7 @@ class twitterBase(metaclass=ABCMeta):
     def saveTweets(self):
         return 0
 
-class MongoInitilize(twitterBase,TwitterConfig):
+class MongoInitilize(TwitterBase,TwitterConfig):
 
     ## api call to fetch tweets from twitter
     def callApi(self):
@@ -68,6 +68,36 @@ class MongoInitilize(twitterBase,TwitterConfig):
             except:
                 pass
 
+class PerformSentimentAnalysis(MongoInitilize):
+
+    def __init__(self):
+        self.client = MongoClient()
+        self.dbNames = self.client.list_database_names()
+
+    def checkData(self):
+        if "tweets_db" in self.dbNames:
+            self.db = self.client.tweets_db
+            try:
+                self.tweet_collection = self.db.tweet_collection
+                self.tweet_cursor = self.tweet_collection.find()
+
+                for document in self.tweet_cursor:
+                    try:
+                        print('-----')
+                        print('name:-', document["user"]["name"])
+                        print('text:-', document["text"])
+                        print('Created Date:-', document["created_at"])
+                    except:
+                        print("Error in Encoding")
+                        pass
+            except:
+                print("Documents not found")
+                pass
+        else:
+            print("Database not found")
+
 if __name__ == '__main__':
     mongo = MongoInitilize()
     mongo.startProcess()
+    sanalysis = PerformSentimentAnalysis()
+    sanalysis.checkData()
