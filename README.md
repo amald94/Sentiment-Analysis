@@ -4,9 +4,9 @@ Sentiment Analysis on Twitter Tweets using NLP library TextBlob.
 # The Approach
 The tasks performed in this project are as following:
 ```
-◆ Stream twitter tweets into MongoDB </br>
-◆ Analyze the tweets saved in mongoDb </br>
-◆ Save the result into a csv file</br>
+◆ Stream twitter tweets into MongoDB
+◆ Analyze the tweets saved in mongoDb
+◆ Save the result into a csv file
 ```
 
 # Development Guide
