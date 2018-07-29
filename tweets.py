@@ -53,15 +53,20 @@ class MongoInitilize(TwitterBase,TwitterConfig):
         self.dbNames = self.client.list_database_names()
         if self.dbNameTwitter in self.dbNames:
             ## method call to perform the action
-            os.remove("out.csv")
+            try:
+                os.remove("out.csv")
+            except:
+                print("file not found exception")
+                pass
             self.searchTweets()
         else:
             self.mongoTableCreate()
+            self.searchTweets()
 
     def searchTweets(self):
         print("Searching tweets")
-        self.count = 50
-        self.query = "trump"
+        self.count = int(input("Enter the no of tweets to stream : "))
+        self.query = input("Enter the keyword to search : ")
         ## twitter api call
         self.tweetz = self.callApi()
         self.searchResult = self.tweetz.search.tweets(count=self.count,q=self.query)
@@ -125,7 +130,7 @@ class PerfromAnalysis(MongoInitilize):
         else:
             print("Database not found")
 
-        self.outDf = pd.DataFrame({'Comment': self.comment, 'Result': self.result})
+        self.outDf = pd.DataFrame({'Comment': self.comment, 'Result': self.result},index=None)
         self.outDf.to_csv("out.csv")
 
 
