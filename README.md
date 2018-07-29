@@ -1,7 +1,7 @@
-#Sentiment-Analysis
+# Sentiment-Analysis
 Sentiment Analysis on Twitter Tweets using NLP library TextBlob.
 
-#The Approach
+# The Approach
 The tasks performed in this project are as following:
 ```
 ◆ Stream twitter tweets into MongoDB </br>
